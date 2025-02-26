@@ -1,5 +1,5 @@
 <script lang="ts">
-  // You can use SvelteKit's <a href="..."> links for navigation.
+  // Simple navigation links.
 </script>
 
 <nav class="flex items-center justify-between p-4 bg-gray-800 text-white">

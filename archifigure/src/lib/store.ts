@@ -9,23 +9,34 @@ export const authenticated = writable<boolean>(isAuthenticated());
 
 // Theme
 export const theme = writable<'light' | 'dark'>(
-  browser && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  browser && (localStorage.getItem('color-theme') === 'dark' || 
+  (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) 
+  ? 'dark' : 'light'
 );
 
 // Initialize theme
 export function initTheme() {
   if (!browser) return;
   
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  const updateTheme = (e: MediaQueryListEvent | MediaQueryList) => {
-    theme.set(e.matches ? 'dark' : 'light');
-  };
-  
-  theme.subscribe(value => {
-    if (!browser) return;
+  const setTheme = (value: 'light' | 'dark') => {
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(value);
+    localStorage.setItem('color-theme', value);
+  };
+  
+  // Initial setup
+  theme.subscribe(value => {
+    if (!browser) return;
+    setTheme(value);
   });
+  
+  // Watch for system changes
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const updateTheme = (e: MediaQueryListEvent) => {
+    if (!localStorage.getItem('color-theme')) {
+      theme.set(e.matches ? 'dark' : 'light');
+    }
+  };
   
   mediaQuery.addEventListener('change', updateTheme);
   return () => mediaQuery.removeEventListener('change', updateTheme);

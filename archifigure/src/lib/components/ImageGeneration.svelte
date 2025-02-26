@@ -11,7 +11,7 @@
   export let useImagen3 = true;
 
   let generatingImages = false;
-  let generatedImages: { url: string, prompt: string, pendingId: string }[] = [];
+  let generatedImages: { url: string, prompt: string, pendingId: string }[] = []
   let progress = { current: 0, total: 0 };
   
   // Prompt generation
@@ -19,10 +19,12 @@
   const promptSuffix = ", head to toe view, studio lighting, set stark against a solid white background";
   let basePrompt = defaultPrompt;
   let lists: Record<string, string[]> = {};
-  let detectedLists: string[] = [];
+  let detectedLists: string[] = []
   let newTag = "";
   let activeListId: string | null = null;
-  let editingTag = { listId: null, index: null, value: "" };
+  
+  // Fixed type definition to allow string and number types
+  let editingTag: { listId: string | null, index: number | null, value: string } = { listId: null, index: null, value: "" };
 
   const negativePrompt = "blurry, distorted, low quality, low resolution, deformed, " + 
     "out of frame, cropped, missing limbs, partial body, head only, close-up, " +

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Upload, ChevronRight, Settings, Github, X, Loader2 } from 'lucide-svelte';
+  import { Upload, ChevronRight, Settings, Github, X, Loader2, Info, Plus, Check } from 'lucide-svelte';
   import { theme, currentProjectId, projects, pendingSubmissions, selectedModel, isDarkMode } from '$lib/store';
   import { uploadFile, apiPost } from '$lib/utils';
   import { getProjects } from '$lib/supabase';
@@ -45,7 +45,6 @@
         created_at: new Date().toISOString(),
         project_id: $currentProjectId || undefined,
       }));
-      
       pendingSubmissions.update(prev => [...newSubmissions, ...prev]);
       
       // Generate models for all images
@@ -56,7 +55,6 @@
             ...formData,
             project_id: $currentProjectId || undefined
           });
-          
           // For demo, simulate a successful prediction with a static model URL
           setTimeout(() => {
             selectedModel.set({
@@ -110,14 +108,6 @@
       target.value = '';
     }
   }
-
-  // (Optional) A keydown handler if you ever want to trigger fileInput.click() from elsewhere.
-  function handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      fileInput.click();
-    }
-  }
 </script>
 
 <div class="relative h-[100dvh] w-full overflow-hidden flex flex-col">
@@ -125,8 +115,9 @@
   <div class="border-b">
     <div class="flex h-12 items-center px-2 sm:px-4 max-w-screen-2xl mx-auto">
       <div class="flex items-center space-x-2 font-semibold text-lg">
+        <!-- Using the same valid URL here as in Navbar -->
         <img
-          src={$isDarkMode ? "https://i.ibb.co/v4wcBzGK/logo-default.png" : "https://i.ibb.co/BV7rr4z2/logo-default.png"}
+          src="https://i.ibb.co/v4wcBzGK/logo-default.png"
           alt="ArchiFigure Logo"
           class="h-7 w-auto"
         />
